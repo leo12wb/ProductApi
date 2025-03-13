@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductApi.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;  // Importa a namespace para o atributo [Authorize]
 
 namespace ProductApi.Controllers
 {
@@ -17,6 +18,7 @@ namespace ProductApi.Controllers
 
         // GET: api/products
         [HttpGet]
+        [Authorize]  // Protege a rota com autenticação JWT
         public ActionResult<IEnumerable<Product>> GetProducts()
         {
             return Ok(products);

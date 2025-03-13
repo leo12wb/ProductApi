@@ -31,3 +31,11 @@ D:\Meus Documentos\Documentos\projetos\c#\ProductApi\obj\Debug\net9.0\refint\Pro
 D:\Meus Documentos\Documentos\projetos\c#\ProductApi\obj\Debug\net9.0\ProductApi.pdb
 D:\Meus Documentos\Documentos\projetos\c#\ProductApi\obj\Debug\net9.0\ProductApi.genruntimeconfig.cache
 D:\Meus Documentos\Documentos\projetos\c#\ProductApi\obj\Debug\net9.0\ref\ProductApi.dll
+D:\Meus Documentos\Documentos\projetos\c#\ProductApi\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Meus Documentos\Documentos\projetos\c#\ProductApi\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Meus Documentos\Documentos\projetos\c#\ProductApi\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Meus Documentos\Documentos\projetos\c#\ProductApi\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+D:\Meus Documentos\Documentos\projetos\c#\ProductApi\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+D:\Meus Documentos\Documentos\projetos\c#\ProductApi\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Meus Documentos\Documentos\projetos\c#\ProductApi\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+D:\Meus Documentos\Documentos\projetos\c#\ProductApi\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
