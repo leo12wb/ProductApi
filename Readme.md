@@ -24,6 +24,7 @@ Execute o comando dotnet run para iniciar a aplicação
 Acesse os endpoints via http://localhost:5007/api/products ou https://localhost:7226/api/products
 
 ```bash
+dotnet restore
 dotnet clean
 dotnet build
 dotnet run
