@@ -42,6 +42,25 @@ namespace ProductApi.Controllers
         [HttpPost]
         public ActionResult<Product> CreateProduct(Product product)
         {
+
+            // Verificar se o nome é válido (não nulo ou vazio)
+            if (string.IsNullOrWhiteSpace(product.Name))
+            {
+                return BadRequest("O nome do produto não pode ser vazio.");
+            }
+
+            // Verificar se o nome tem mais de 3 caracteres
+            if (product.Name.Length <= 3)
+            {
+                return BadRequest("O nome do produto deve ter mais de 3 caracteres.");
+            }
+
+            // Verificar se o preço é válido (não zero ou negativo)
+            if (product.Price <= 0)
+            {
+                return BadRequest("O preço do produto deve ser maior que zero.");
+            }
+
             product.Id = products.Max(p => p.Id) + 1; // Gera um ID único
             products.Add(product);
 
@@ -59,11 +78,30 @@ namespace ProductApi.Controllers
                 return NotFound();
             }
 
+            // Validação do Name
+            if (string.IsNullOrWhiteSpace(product.Name))
+            {
+                return BadRequest("O nome do produto não pode ser vazio.");
+            }
+
+            if (product.Name.Length <= 3)
+            {
+                return BadRequest("O nome do produto deve ter mais de 3 caracteres.");
+            }
+
+            // Validação do Price
+            if (product.Price <= 0)
+            {
+                return BadRequest("O preço do produto deve ser maior que zero.");
+            }
+
             existingProduct.Name = product.Name;
             existingProduct.Description = product.Description;
             existingProduct.Price = product.Price;
 
-            return NoContent(); // Não retorna nada, mas indica sucesso
+            // return NoContent(); // Não retorna nada, mas indica sucesso
+            // Retorna o produto atualizado com status 200 OK
+            return Ok(existingProduct);
         }
 
         // DELETE: api/products/1
