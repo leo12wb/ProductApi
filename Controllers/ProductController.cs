@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductApi.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;  // Importa a namespace para o atributo [Authorize]
+using ProductApi.Data;  // Adiciona a referência para o DbContext
 
 namespace ProductApi.Controllers
 {
@@ -10,25 +12,28 @@ namespace ProductApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private static List<Product> products = new List<Product>
+        private readonly ApplicationDbContext _context;
+
+        // Construtor que injeta o DbContext
+        public ProductsController(ApplicationDbContext context)
         {
-            new Product { Id = 1, Name = "Produto 1", Description = "Descrição do Produto 1", Price = 10.99m },
-            new Product { Id = 2, Name = "Produto 2", Description = "Descrição do Produto 2", Price = 20.99m }
-        };
+            _context = context;
+        }
 
         // GET: api/products
         [HttpGet]
         [Authorize]  // Protege a rota com autenticação JWT
-        public ActionResult<IEnumerable<Product>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return Ok(products);
+            // Retorna a lista de produtos do banco de dados
+            return Ok(await _context.Products.ToListAsync());
         }
 
         // GET: api/products/1
         [HttpGet("{id}")]
-        public ActionResult<Product> GetProduct(int id)
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = products.FirstOrDefault(p => p.Id == id);
+            var product = await _context.Products.FindAsync(id);
 
             if (product == null)
             {
@@ -40,9 +45,8 @@ namespace ProductApi.Controllers
 
         // POST: api/products
         [HttpPost]
-        public ActionResult<Product> CreateProduct(Product product)
+        public async Task<ActionResult<Product>> CreateProduct(Product product)
         {
-
             // Verificar se o nome é válido (não nulo ou vazio)
             if (string.IsNullOrWhiteSpace(product.Name))
             {
@@ -61,17 +65,18 @@ namespace ProductApi.Controllers
                 return BadRequest("O preço do produto deve ser maior que zero.");
             }
 
-            product.Id = products.Max(p => p.Id) + 1; // Gera um ID único
-            products.Add(product);
+            // Adiciona o produto ao banco de dados
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
         }
 
         // PUT: api/products/1
         [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id, Product product)
+        public async Task<IActionResult> UpdateProduct(int id, Product product)
         {
-            var existingProduct = products.FirstOrDefault(p => p.Id == id);
+            var existingProduct = await _context.Products.FindAsync(id);
 
             if (existingProduct == null)
             {
@@ -99,23 +104,24 @@ namespace ProductApi.Controllers
             existingProduct.Description = product.Description;
             existingProduct.Price = product.Price;
 
-            // return NoContent(); // Não retorna nada, mas indica sucesso
-            // Retorna o produto atualizado com status 200 OK
+            await _context.SaveChangesAsync();
+
             return Ok(existingProduct);
         }
 
         // DELETE: api/products/1
         [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product = products.FirstOrDefault(p => p.Id == id);
+            var product = await _context.Products.FindAsync(id);
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            products.Remove(product);
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
 
             return NoContent(); // Indica que o produto foi removido com sucesso
         }

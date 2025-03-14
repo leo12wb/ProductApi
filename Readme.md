@@ -27,3 +27,13 @@ Acesse os endpoints via http://localhost:5007/api/products ou https://localhost:
 dotnet clean
 dotnet build
 dotnet run
+```
+
+Adicionar a migração:
+```bash
+dotnet ef migrations add InitialCreate
+```
+Atualizar o banco de dados:
+```bash
+dotnet ef database update
+```

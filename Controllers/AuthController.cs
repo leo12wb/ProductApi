@@ -4,6 +4,9 @@ using ProductApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using ProductApi.Data; // Adiciona a referência para o ApplicationDbContext
+using System.Threading.Tasks;
 
 namespace ProductApi.Controllers
 {
@@ -11,24 +14,27 @@ namespace ProductApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly ApplicationDbContext _context;
+
         // Chave secreta
         private static readonly string SECRET_KEY = Environment.GetEnvironmentVariable("SECRET_KEY") 
             ?? throw new InvalidOperationException("SECRET_KEY não foi configurada.");
         private static readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
 
-        // Simulação de um "banco de dados" de usuários
-        private static readonly User[] Users = new[]
+        // Injeta o contexto do banco de dados
+        public AuthController(ApplicationDbContext context)
         {
-            new User { Email = "user@example.com", Password = "password123" },
-            new User { Email = "admin@example.com", Password = "adminpassword" },
-        };
+            _context = context;
+        }
 
         // Endpoint para login (gerar o JWT)
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            // Verificar se o usuário existe no "banco de dados"
-            var user = Users.FirstOrDefault(u => u.Email == loginRequest.Email && u.Password == loginRequest.Password);
+            // Verificar se o usuário existe no banco de dados
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == loginRequest.Email && u.Password == loginRequest.Password);
+
             if (user == null)
             {
                 return Unauthorized(); // Retorna 401 se o login falhar
@@ -38,7 +44,7 @@ namespace ProductApi.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Email.Contains("admin") ? "Admin" : "User"),
+                new Claim(ClaimTypes.Role, user.Role ?? "User"),  // Define um papel (Role) para o usuário (pode ser admin, user, etc)
             };
 
             // Cria o token JWT
