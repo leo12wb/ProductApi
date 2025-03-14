@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Meus Documentos\\Documentos\\projetos\\c#\\ProductApi\\ProductApi.csproj": {}
+    "D:\\Meus Documentos\\Documentos\\projetos\\c#\\github\\ProductApi\\ProductApi.csproj": {}
   },
   "projects": {
-    "D:\\Meus Documentos\\Documentos\\projetos\\c#\\ProductApi\\ProductApi.csproj": {
+    "D:\\Meus Documentos\\Documentos\\projetos\\c#\\github\\ProductApi\\ProductApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Meus Documentos\\Documentos\\projetos\\c#\\ProductApi\\ProductApi.csproj",
+        "projectUniqueName": "D:\\Meus Documentos\\Documentos\\projetos\\c#\\github\\ProductApi\\ProductApi.csproj",
         "projectName": "ProductApi",
-        "projectPath": "D:\\Meus Documentos\\Documentos\\projetos\\c#\\ProductApi\\ProductApi.csproj",
+        "projectPath": "D:\\Meus Documentos\\Documentos\\projetos\\c#\\github\\ProductApi\\ProductApi.csproj",
         "packagesPath": "C:\\Users\\Portalgov\\.nuget\\packages\\",
-        "outputPath": "D:\\Meus Documentos\\Documentos\\projetos\\c#\\ProductApi\\obj\\",
+        "outputPath": "D:\\Meus Documentos\\Documentos\\projetos\\c#\\github\\ProductApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Portalgov\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -44,6 +44,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "DotNetEnv": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.3, )"

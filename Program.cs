@@ -1,8 +1,16 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Carregar as variáveis do arquivo .env
+Env.Load();
+
+// Obter a chave secreta do ambiente
+string secretKey = Environment.GetEnvironmentVariable("SECRET_KEY") 
+    ?? throw new InvalidOperationException("SECRET_KEY não foi configurada.");
 
 // Adiciona os serviços ao contêiner
 builder.Services.AddControllers();
@@ -20,7 +28,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("d2f3f8c9e7b1a7b6e5c3a4d9b9c2e8e9f9d5d6a3c4f7f9f6b8f5e7d2a9d3e7d")) // Defina sua chave secreta aqui
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)) // Defina sua chave secreta aqui
     };
 });
 
